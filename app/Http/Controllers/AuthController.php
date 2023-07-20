@@ -63,7 +63,8 @@ class AuthController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
                 'email' => 'required|string|email|unique:users,email',
-                'password' => 'required|string'
+                'password' => 'required|string',
+                'gender' => 'required|string|max:50'
             ]);
 
             if ($validator->fails()) {
@@ -77,7 +78,8 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                'gender' => $request->gender
             ]);
 
             return response()->json([
@@ -86,7 +88,10 @@ class AuthController extends Controller
                 'data' => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'email' => $user->email
+                    'email' => $user->email,
+                    'gender' => $user->gender,
+                    'balance' => 'Rp.' . number_format($user->balance, 2, ",", "."),
+                    'createdAt' => $user->created_at->toDateString()
                 ]
             ]);
 

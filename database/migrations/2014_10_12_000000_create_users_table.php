@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('roles')->default('USER');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('gender', 50);
+            $table->integer('balance')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

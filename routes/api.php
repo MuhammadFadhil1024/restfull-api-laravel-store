@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ Route::prefix('/v1')->group(function () {
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::put('/', [UserController::class, 'update'])->middleware('auth:api');
+        Route::put('/topup', [UserController::class, 'topup'])->middleware('auth:api');
     });
 
     Route::middleware(['auth:api', 'IsAdmin'])->prefix('/categories')->group(function () {
