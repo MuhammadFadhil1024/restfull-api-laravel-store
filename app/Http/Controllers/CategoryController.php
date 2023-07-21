@@ -14,12 +14,38 @@ class CategoryController extends Controller
     {
         try {
 
-            $category = DB::table('categories')->get();
+            // $category = DB::table('categories')->leftJoin('products', 'categories.id', '=' , 'products.categories_id')
+            //     ->select('categories.id as category_id','categories.type as type','categories.sold_product_amount as sold_products',
+            //      'categories.created_at as createdAt', 'categories.updated_at as updatedAt', 'products.id as id', 'products.title as title',
+            //      'products.price as price', 'products.stock as stock', 'products.created_at as createdAt', 'products.updated_at as updatedAt')
+            //     ->get();
+            //     $data = $category->groupBy('category_id')->map(function ($categoryItems) {
+            //         return [
+            //             'id' => $categoryItems[0]->category_id,
+            //             'type' => $categoryItems[0]->type,
+            //             'sold_product_amount' => $categoryItems[0]->sold_products,
+            //             'createdAt' => $categoryItems[0]->createdAt,
+            //             'updatedAt' => $categoryItems[0]->updatedAt,
+            //             'products' => $categoryItems->map(function ($item) {
+            //                 return [
+            //                     'id' => $item->id,
+            //                     'title' => $item->title,
+            //                     'price' => $item->price,
+            //                     'stock' => $item->stock,
+            //                     'createdAt' => $item->createdAt,
+            //                     'updatedAt' => $item->updatedAt
+            //                 ];
+            //             })
+            //         ];
+            //     });
+
+            $data = Category::with('products')->get();
+
 
             return response()->json([
                 'code' => '200',
                 'status' => 'OK',
-                'data' => $category
+                'data' => $data
             ], 200);
             
         } catch (\Exception $e){

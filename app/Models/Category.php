@@ -12,4 +12,10 @@ class Category extends Model
     protected $fillable = [
         'type', 'sold_product_amount'
     ];
+
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'categories_id', 'id');
+    }
 }
