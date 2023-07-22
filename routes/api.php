@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\TransactionHisstoryController;
 use App\Http\Controllers\UserController;
+use App\Models\TransactionHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +48,13 @@ Route::prefix('/v1')->group(function () {
         Route::put('/{id}', [ProductController::class, 'update'])->middleware('IsAdmin');
         Route::patch('/{id}', [ProductController::class, 'updateCategory'])->middleware('IsAdmin');
         Route::delete('/{id}', [ProductController::class, 'delete'])->middleware('IsAdmin');
+    });
+
+    Route::middleware(['auth:api'])->prefix('/transactions')->group(function () {
+        Route::post('/', [TransactionHisstoryController::class, 'store']);
+        Route::get('/users', [TransactionHisstoryController::class, 'transactionUser']);
+        Route::get('/admin', [TransactionHisstoryController::class, 'transactionAdmin'])->middleware('IsAdmin');
+        Route::get('/{id}', [TransactionHisstoryController::class, 'transactionDetail'])->middleware('transaction');
     });
 
 });
