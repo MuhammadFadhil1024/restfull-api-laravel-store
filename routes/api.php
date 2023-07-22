@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +38,14 @@ Route::prefix('/v1')->group(function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{id}', [CategoryController::class, 'update']);
         Route::delete('/{id}', [CategoryController::class, 'delete']);
+    });
+
+    Route::middleware(['auth:api'])->prefix('/products')->group( function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store'])->middleware('IsAdmin');
+        Route::put('/{id}', [ProductController::class, 'update'])->middleware('IsAdmin');
+        Route::patch('/{id}', [ProductController::class, 'updateCategory'])->middleware('IsAdmin');
+        Route::delete('/{id}', [ProductController::class, 'delete'])->middleware('IsAdmin');
     });
 
 });
