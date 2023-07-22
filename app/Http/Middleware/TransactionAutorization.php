@@ -18,37 +18,45 @@ class TransactionAutorization
     public function handle(Request $request, Closure $next): Response
     {
         $transaction_id = $request->route()->parameters();
-        // dd($transaction_id['id']);
 
         $transaction = TransactionHistory::find($transaction_id['id']);
-        // dd($transaction);
 
-        if (Auth::user()->roles == 'ADMIN') {
-            
-            return $next($request);    
+        if ($transaction) {
+            if (Auth::user()->roles == 'ADMIN') {
 
-        } elseif( Auth::user()->roles == 'USER' )
-        {   
-            if (Auth::user()->id == $transaction->user_id) {
+                return $next($request);    
+
+            } elseif( Auth::user()->roles == 'USER' )
+            {   
+
+                if (Auth::user()->id == $transaction->user_id) {
+
+                    return $next($request);
+
+                } 
                 
-                return $next($request);
+                return response()->json([
+                    'code' => '403',
+                    'status' => 'FORBIDDEN',
+                    'message' => 'You dont have access for this resource'
+                ]);
 
-            } 
+            } else {
 
-            return response()->json([
-                'code' => '403',
-                'status' => 'FORBIDDEN',
-                'message' => 'You dont have access for this resource'
-            ]);
+                return response()->json([
+                    'code' => '403',
+                    'status' => 'FORBIDDEN',
+                    'message' => 'You dont have access for this resource'
+                ]);
 
-        } else {
-            return response()->json([
-                'code' => '403',
-                'status' => 'FORBIDDEN',
-                'message' => 'You dont have access for this resource'
-            ]);
+            }
         }
 
+        return response()->json([
+            'code' => '401',
+            'status' => 'NOT_FOUND',
+            'errors' => 'Product with id ' . $transaction_id['id'] . ' not found'
+        ]);
         
     }
 }

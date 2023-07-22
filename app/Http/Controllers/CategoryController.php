@@ -50,7 +50,8 @@ class CategoryController extends Controller
             
         } catch (\Exception $e){
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -87,12 +88,11 @@ class CategoryController extends Controller
             ], 201);
 
         } catch (\Exception $e) {
-            
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
-
         }
     }
 
@@ -130,13 +130,14 @@ class CategoryController extends Controller
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'category with id ' . $id . ' not found'
+                'errors' => 'category with id ' . $id . ' not found'
             ]);
 
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -154,19 +155,19 @@ class CategoryController extends Controller
                 return response()->json([
                     'code' => '200',
                     'status' => 'OK',
-                    'message' => 'Category has been successfully deleted'
                 ]);
             }
 
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'category with id ' . $id . ' not found'
+                'errors' => 'category with id ' . $id . ' not found'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }

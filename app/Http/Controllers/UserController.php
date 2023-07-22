@@ -30,29 +30,27 @@ class UserController extends Controller
 
             $user = User::find(Auth::user()->id);
 
-            if ($user) {
-                $user->name = $request->name;
-                $user->email = $request->email;
-                $user->update();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->update();
 
-                return response()->json([
-                    'code' => '200',
-                    'status' => 'OK',
-                    'data' => [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'createdAt' => $user->created_at->toDateString(),
-                        'updatedAt' => $user->updated_at->toDateString(),
+            return response()->json([
+                'code' => '200',
+                'status' => 'OK',
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'createdAt' => $user->created_at->toDateString(),
+                    'updatedAt' => $user->updated_at->toDateString(),
                     ]
                 ]);
-            }
 
         } catch (\Exception $e) {
-            Log::error($e);
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
 
@@ -60,37 +58,44 @@ class UserController extends Controller
 
     public function topup(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'balance' => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'code' => '422',
-                'status' => 'UNPROCESSABLE_CONTENT',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $user = User::find(Auth::user()->id);
-
-            if ($user) {
-                $user->balance = $request->balance;
-                $user->update();
-
+        try {
+            
+            $validator = Validator::make($request->all(), [
+                'balance' => 'required|integer'
+            ]);
+    
+            if ($validator->fails()) {
                 return response()->json([
-                    'code' => '200',
-                    'status' => 'OK',
-                    'data' => [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'balance' => 'Rp.' . number_format($user->balance, 2, ",", "."),
-                        'createdAt' => $user->created_at->toDateString(),
-                        'updatedAt' => $user->updated_at->toDateString(),
+                    'code' => '422',
+                    'status' => 'UNPROCESSABLE_CONTENT',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+    
+            $user = User::find(Auth::user()->id);
+    
+            $user->balance = $request->balance;
+            $user->update();
+    
+            return response()->json([
+                'code' => '200',
+                'status' => 'OK',
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'balance' => 'Rp.' . number_format($user->balance, 2, ",", "."),
+                    'createdAt' => $user->created_at->toDateString(),
+                    'updatedAt' => $user->updated_at->toDateString(),
                     ]
                 ]);
 
-            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 }

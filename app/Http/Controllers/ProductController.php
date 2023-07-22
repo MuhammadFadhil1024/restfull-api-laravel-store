@@ -68,12 +68,13 @@ class ProductController extends Controller
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'category with id ' . $request->categories_id . ' not found'
+                'errors' => 'category with id ' . $request->categories_id . ' not found'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -116,12 +117,13 @@ class ProductController extends Controller
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'product with id ' . $id . ' not found'
+                'errors' => 'product with id ' . $id . ' not found'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -158,18 +160,19 @@ class ProductController extends Controller
                 return response()->json([
                     'code' => '401',
                     'status' => 'NOT_FOUND',
-                    'message' => 'categories with id ' . $request->categories_id . ' not found'
+                    'errors' => 'categories with id ' . $request->categories_id . ' not found'
                 ]);
             }
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'product with id ' . $id . ' not found'
+                'errors' => 'product with id ' . $id . ' not found'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -187,19 +190,19 @@ class ProductController extends Controller
                 return response()->json([
                     'code' => '200',
                     'status' => 'OK',
-                    'message' => 'Product has been successfully deleted'
                 ]);
             }
 
             return response()->json([
                 'code' => '401',
                 'status' => 'NOT_FOUND',
-                'message' => 'product with id ' . $id . ' not found'
+                'errors' => 'product with id ' . $id . ' not found'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }

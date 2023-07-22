@@ -48,9 +48,10 @@ class AuthController extends Controller
                 ]
                 ], 200);
         }
-         catch (\Throwable $e) {
+         catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -96,10 +97,10 @@ class AuthController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            Log::error($e);
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -116,10 +117,10 @@ class AuthController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            Log::error($e);
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
 

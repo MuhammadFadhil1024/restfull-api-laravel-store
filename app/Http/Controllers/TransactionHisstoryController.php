@@ -15,7 +15,6 @@ class TransactionHisstoryController extends Controller
     
     public function store (Request $request)
     {
-
         try {
             $validator = Validator::make($request->all(), [
                 'product_id' => 'required|integer',
@@ -92,8 +91,9 @@ class TransactionHisstoryController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
 
@@ -133,8 +133,9 @@ class TransactionHisstoryController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -174,13 +175,14 @@ class TransactionHisstoryController extends Controller
                 'code' => '200',
                 'status' => 'OK',
                 'data' => $transactionMap
-            ]);
+            ], 200);
 
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -209,14 +211,15 @@ class TransactionHisstoryController extends Controller
 
             return response()->json([
                 'code' => '200',
-                'status' => 'CREATED',
+                'status' => 'OK',
                 'data' => $data
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()
+                'code' => '500',
+                'status' => 'INTERNAL_SERVER_ERROR',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
